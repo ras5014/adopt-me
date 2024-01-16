@@ -6,9 +6,6 @@ function App() {
   return (
     <>
       <h1>Adopt Me!</h1>
-      {/* <Pet name="Luna" animal="Dog" breed="Havanese" />
-      <Pet name="Bird" animal="Pepper" breed="Cocktiel" />
-      <Pet name="Cat" animal="Doink" breed="Mixed" /> */}
       <SearchParams />
     </>
   );
