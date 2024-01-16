@@ -10,6 +10,7 @@ const Results = ({ pets }) => {
           return (
             <Pet
               animal={pet.animal}
+              id={pet.id}
               name={pet.name}
               breed={pet.breed}
               images={pet.images}
