@@ -1,11 +1,14 @@
 import "./App.css";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom"; // React router
 import { Link } from "react-router-dom"; // No Page refresh (Using "<a></a>" refreshes the page)
 import { QueryClient, QueryClientProvider } from "react-query"; // We use this to have a cache memory (Use this instead of useEffect or custom hook)
 import SearchParams from "./components/SearchParams"; // We use React query to load pages faster because stores results in cache
 import Details from "./components/Details";
+import AdoptedPetContext from "./AdoptedPetContext";
 
 const App = () => {
+  const adoptedPet = useState(null);
   // React Query Setup
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -20,14 +23,17 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <header>
-          <Link to="/">Adopt Me!</Link>
-        </header>
-
-        <Routes>
-          <Route path="/details/:id" element={<Details />}></Route>
-          <Route path="/" element={<SearchParams />}></Route>
-        </Routes>
+        <AdoptedPetContext.Provider value={adoptedPet}>
+          {/* By this "AdoptedPetContext" now all the app will have knowledge
+          about adoptedPet */}
+          <header>
+            <Link to="/">Adopt Me!</Link>
+          </header>
+          <Routes>
+            <Route path="/details/:id" element={<Details />}></Route>
+            <Route path="/" element={<SearchParams />}></Route>
+          </Routes>
+        </AdoptedPetContext.Provider>
       </QueryClientProvider>
     </BrowserRouter>
   );

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import Results from "./Results";
 import fetchSearch from "../fetchSearch";
 import fetchBreedList from "../fetchBreedList";
+import AdoptedPetContext from "../AdoptedPetContext";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
@@ -15,7 +16,7 @@ const SearchParams = () => {
   const [animal, setAnimal] = useState("");
   const results1 = useQuery(["breeds", animal], fetchBreedList); // It runs whenever animal changes (checks breed cache, if data available it fetches) depending on the stall & cache time
   const breeds = results1?.data?.breeds ?? [];
-
+  const [adoptedPet] = useContext(AdoptedPetContext); // Here we are using only adoptedPet
   // Use react-query instead of useEffect
   const results = useQuery(["search", requestParams], fetchSearch); // Here search is the key in the cache used by react-dom
   const pets = results?.data?.pets ?? [];
@@ -33,6 +34,11 @@ const SearchParams = () => {
           setRequestParams(obj);
         }}
       >
+        {adoptedPet ? (
+          <div className="pet image-container">
+            <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
+          </div>
+        ) : null}
         <label htmlFor="location">Location</label>
         <input id="location" name="location" placeholder="Location" />
         <label htmlFor="animal">Animal</label>
