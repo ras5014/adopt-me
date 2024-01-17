@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 import Results from "./Results";
-import { useBreedList } from "../useBreedList";
 import fetchSearch from "../fetchSearch";
+import fetchBreedList from "../fetchBreedList";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
@@ -13,7 +13,8 @@ const SearchParams = () => {
   });
 
   const [animal, setAnimal] = useState("");
-  const [breeds] = useBreedList(animal); // It runs whenever animal changes
+  const results1 = useQuery(["breeds", animal], fetchBreedList); // It runs whenever animal changes (checks breed cache, if data available it fetches) depending on the stall & cache time
+  const breeds = results1?.data?.breeds ?? [];
 
   // Use react-query instead of useEffect
   const results = useQuery(["search", requestParams], fetchSearch); // Here search is the key in the cache used by react-dom
@@ -25,7 +26,7 @@ const SearchParams = () => {
           e.preventDefault();
           const formData = new FormData(e.target);
           const obj = {
-            animal: formData.get("animal") ?? "",
+            animal: formData.get("animal") ?? "", // Data agaya nahinto empty string kardo
             breed: formData.get("breed") ?? "",
             location: formData.get("location") ?? "",
           };
@@ -37,6 +38,7 @@ const SearchParams = () => {
         <label htmlFor="animal">Animal</label>
         <select
           id="animal"
+          name="animal"
           value={animal}
           onChange={(e) => {
             setAnimal(e.target.value);
@@ -62,3 +64,8 @@ const SearchParams = () => {
 };
 
 export default SearchParams;
+
+/*
+  Func-1 : By selecting an animal, we can get the breeds of that animal
+  Func-2 : By giving input to the form we can get the list of all pets available to adopt
+*/
