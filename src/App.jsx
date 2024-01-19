@@ -1,9 +1,15 @@
 import "./App.css";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom"; // React router
 import { Link } from "react-router-dom"; // No Page refresh (Using "<a></a>" refreshes the page)
-import { QueryClient, QueryClientProvider } from "react-query"; // We use this to have a cache memory (Use this instead of useEffect or custom hook)
-import SearchParams from "./components/SearchParams"; // We use React query to load pages faster because stores results in cache
-import Details from "./components/Details";
+import { QueryClient, QueryClientProvider } from "react-query"; // We use this to have a cache memory (Use this instead of useEffect or custom hook) // We use React query to load pages faster because stores results in cache
+
+// To Increase performance we don't need to load Details and SearchParams at the starting (This is to decrease initial load size)
+// import SearchParams from "./components/SearchParams";
+// import Details from "./components/Details";
+// Load them as on when required (This is called code slitting)
+const Details = lazy(() => import("./components/Details"));
+const SearchParams = lazy(() => import("./components/SearchParams"));
 
 const App = () => {
   // React Query Setup
@@ -20,14 +26,22 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <header>
-          <Link to="/">Adopt Me!</Link>
-        </header>
+        <Suspense
+          fallback={
+            <div className="loading-pane">
+              <h2 className="loader">⏳</h2>
+            </div>
+          }
+        >
+          <header>
+            <Link to="/">Adopt Me!</Link>
+          </header>
 
-        <Routes>
-          <Route path="/details/:id" element={<Details />}></Route>
-          <Route path="/" element={<SearchParams />}></Route>
-        </Routes>
+          <Routes>
+            <Route path="/details/:id" element={<Details />}></Route>
+            <Route path="/" element={<SearchParams />}></Route>
+          </Routes>
+        </Suspense>
       </QueryClientProvider>
     </BrowserRouter>
   );

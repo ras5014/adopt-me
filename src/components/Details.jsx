@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import { useParams } from "react-router-dom"; // To get /:id
 import { useQuery } from "react-query"; // For Query Selector
 import fetchPet from "../fetchPets";
