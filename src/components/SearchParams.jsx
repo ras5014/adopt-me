@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import Results from "./Results";
-import fetchSearch from "../fetchSearch";
-import fetchBreedList from "../fetchBreedList";
-import AdoptedPetContext from "../AdoptedPetContext";
+import fetchSearch from "../apiCalls/fetchSearch";
+import fetchBreedList from "../apiCalls/fetchBreedList";
+import AdoptedPetContext from "../contexts/AdoptedPetContext";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {

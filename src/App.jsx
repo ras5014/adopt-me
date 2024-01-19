@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense } from "react"; // lazy & Suspense are used for code splitting or performance optimization (use this when you have a really big page/component to load)
 import { BrowserRouter, Routes, Route } from "react-router-dom"; // React router
 import { Link } from "react-router-dom"; // No Page refresh (Using "<a></a>" refreshes the page)
 import { QueryClient, QueryClientProvider } from "react-query"; // We use this to have a cache memory (Use this instead of useEffect or custom hook) // We use React query to load pages faster because stores results in cache
@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "react-query"; // We use this t
 // Load them as on when required (This is called code slitting)
 const Details = lazy(() => import("./components/Details"));
 const SearchParams = lazy(() => import("./components/SearchParams"));
-import AdoptedPetContext from "./AdoptedPetContext";
+import AdoptedPetContext from "./contexts/AdoptedPetContext"; // Context API look again
 
 const App = () => {
   const adoptedPet = useState(null);
@@ -27,6 +27,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
+        // Suspense is used cause if we haven't loaded that component yet then
+        while it loads the fallback will be shown or run
         <Suspense
           fallback={
             <div className="loading-pane">

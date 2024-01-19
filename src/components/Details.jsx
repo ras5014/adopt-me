@@ -1,11 +1,12 @@
-import { lazy } from "react";
+import { Suspense, lazy } from "react";
 import { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // To get /:id
 import { useQuery } from "react-query"; // For Query Selector
-import fetchPet from "../fetchPets";
+import fetchPet from "../apiCalls/fetchPets";
 import Carousel from "./Carousel";
-import Modal from "./Modal";
-import AdoptedPetContext from "../AdoptedPetContext";
+// import Modal from "./Modal";
+const Modal = lazy(() => import("./Modal"));
+import AdoptedPetContext from "../contexts/AdoptedPetContext";
 
 const Details = () => {
   const { id } = useParams();
