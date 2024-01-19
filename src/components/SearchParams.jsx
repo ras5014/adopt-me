@@ -14,6 +14,7 @@ const SearchParams = () => {
   });
 
   const [animal, setAnimal] = useState("");
+  // If you want to call APIs at hthe start of the render then use useQuery with no parameters i.e. const results1 = useQuery(["breeds"], fetchBreedList);
   const results1 = useQuery(["breeds", animal], fetchBreedList); // It runs whenever animal changes (checks breed cache, if data available it fetches) depending on the stall & cache time
   const breeds = results1?.data?.breeds ?? [];
   const [adoptedPet] = useContext(AdoptedPetContext); // Here we are using only adoptedPet
